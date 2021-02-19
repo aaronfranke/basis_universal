@@ -34,7 +34,7 @@ namespace basisu
 		{ -16,-48,-64,-80,8,40,56,72 }, { -16,-40,-64,-80,8,32,56,72 }, { -16,-32,-64,-80,8,24,56,72 }, { -16,-40,-56,-80,8,32,48,72 },
 		{ -24,-32,-56,-80,16,24,48,72 }, { -8,-16,-24,-80,0,8,16,72 }, { -32,-48,-64,-72,24,40,56,64 },	{ -24,-40,-56,-72,16,32,48,64 }
 	};
-		
+
 	// Given an ETC1 diff/inten_table/selector, and an 8-bit desired color, this table encodes the best packed_color in the low byte, and the abs error in the high byte.
 	static uint16_t g_etc1_inverse_lookup[2 * 8 * 4][256];      // [ diff/inten_table/selector][desired_color ]
 
@@ -108,7 +108,7 @@ namespace basisu
 
 	static uint32_t etc1_decode_value(uint32_t diff, uint32_t inten, uint32_t selector, uint32_t packed_c)
 	{
-		const uint32_t limit = diff ? 32 : 16; 
+		const uint32_t limit = diff ? 32 : 16;
 		BASISU_NOTE_UNUSED(limit);
 		assert((diff < 2) && (inten < 8) && (selector < 4) && (packed_c < limit));
 		int c;
@@ -240,7 +240,7 @@ namespace basisu
 
 		return best_error;
 	}
-	
+
 	const uint32_t BASISU_ETC1_CLUSTER_FIT_ORDER_TABLE_SIZE = 165;
 
 	static const struct { uint8_t m_v[4]; } g_cluster_fit_order_tab[BASISU_ETC1_CLUSTER_FIT_ORDER_TABLE_SIZE] =
@@ -279,7 +279,7 @@ namespace basisu
 		{ { 2, 1, 2, 3 } },{ { 4, 1, 0, 3 } },{ { 3, 1, 1, 3 } },{ { 1, 1, 2, 4 } },{ { 2, 1, 0, 5 } },
 		{ { 1, 0, 1, 6 } },{ { 0, 2, 1, 5 } },{ { 0, 2, 0, 6 } },{ { 1, 1, 1, 5 } },{ { 1, 1, 0, 6 } }
 	};
-		
+
 	const int g_etc1_inten_tables[cETC1IntenModifierValues][cETC1SelectorValues] =
 	{
 		{ -8,  -2,   2,   8 }, { -17,  -5,  5,  17 }, { -29,  -9,   9,  29 }, {  -42, -13, 13,  42 },
@@ -579,7 +579,7 @@ namespace basisu
 		const int y3 = pInten_modifer_table[3];
 		pDst[3].set(ir + y3, ig + y3, ib + y3, 255);
 	}
-		
+
 	bool unpack_etc1(const etc_block& block, color_rgba *pDst, bool preserve_alpha)
 	{
 		const bool diff_flag = block.get_diff_bit();
@@ -702,7 +702,7 @@ namespace basisu
 	{
 		return (n << 4) | n;
 	}
-		
+
 	uint64_t etc_block::evaluate_etc1_error(const color_rgba* pBlock_pixels, bool perceptual, int subblock_index) const
 	{
 		color_rgba unpacked_block[16];
@@ -751,7 +751,7 @@ namespace basisu
 			}
 		}
 	}
-								
+
 	bool etc1_optimizer::compute()
 	{
 		assert(m_pResult->m_pSelectors);
@@ -802,7 +802,7 @@ namespace basisu
 			}
 			assert(actual_error == m_best_solution.m_error);
 		}
-#endif      
+#endif
 
 		m_pResult->m_error = m_best_solution.m_error;
 
@@ -987,7 +987,7 @@ namespace basisu
 		m_luma.resize(n);
 		m_sorted_luma_indices.resize(n);
 		m_sorted_luma.resize(n);
-		
+
 		for (uint32_t i = 0; i < n; i++)
 		{
 			const color_rgba& c = m_pParams->m_pSrc_pixels[i];
@@ -1015,7 +1015,7 @@ namespace basisu
 
 			m_pSorted_luma = &m_sorted_luma[0];
 			m_pSorted_luma_indices = &m_sorted_luma_indices[0];
-			
+
 			for (uint32_t i = 0; i < n; i++)
 				m_pSorted_luma[i] = m_luma[m_pSorted_luma_indices[i]];
 		}

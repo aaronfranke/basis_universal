@@ -25,15 +25,15 @@ namespace basisu
 	{
 		// Fastest is the lowest quality, although it's stil substantially higher quality vs. BC1/ETC1. It supports 5 modes.
 		// The output may be somewhat blocky because this setting doesn't support 2/3-subset UASTC modes, but it should be less blocky vs. BC1/ETC1.
-		// This setting doesn't write BC1 hints, so BC1 transcoding will be slower. 
+		// This setting doesn't write BC1 hints, so BC1 transcoding will be slower.
 		// Transcoded ETC1 quality will be lower because it only considers 2 hints out of 32.
 		// Avg. 43.45 dB
 		cPackUASTCLevelFastest = 0,
-		
+
 		// Faster is ~3x slower than fastest. It supports 9 modes.
 		// Avg. 46.49 dB
 		cPackUASTCLevelFaster = 1,
-		
+
 		// Default is ~5.5x slower than fastest. It supports 14 modes.
 		// Avg. 47.47 dB
 		cPackUASTCLevelDefault = 2,
@@ -42,7 +42,7 @@ namespace basisu
 		// Avg. 48.01 dB
 		cPackUASTCLevelSlower = 3,
 
-		// VerySlow is ~200x slower than fastest. 
+		// VerySlow is ~200x slower than fastest.
 		// The best quality the codec is capable of, but you'll need to be patient or have a lot of cores.
 		// Avg. 48.24 dB
 		cPackUASTCLevelVerySlow = 4,
@@ -53,7 +53,7 @@ namespace basisu
 		// These flags allow you to favor only optimizing for lowest UASTC error, or lowest BC7 error.
 		cPackUASTCFavorUASTCError = 8,
 		cPackUASTCFavorBC7Error = 16,
-						
+
 		cPackUASTCETC1FasterHints = 64,
 		cPackUASTCETC1FastestHints = 128,
 		cPackUASTCETC1DisableFlipAndIndividual = 256,
@@ -72,7 +72,7 @@ namespace basisu
 		color_rgba m_solid_color;
 		uint64_t m_astc_err;
 	};
-			  
+
 	void pack_uastc(basist::uastc_block& blk, const uastc_encode_results& result, const etc_block& etc1_blk, uint32_t etc1_bias, const eac_a8_block& etc_eac_a8_blk, bool bc1_hint0, bool bc1_hint1);
 	const float UASTC_RDO_DEFAULT_MAX_ALLOWED_RMS_INCREASE_RATIO = 10.0f;
 	const float UASTC_RDO_DEFAULT_SKIP_BLOCK_RMS_THRESH = 8.0f;
@@ -105,14 +105,14 @@ namespace basisu
 		// m_langrangian_multiplier: The post-processor tries to reduce rate+distortion*langrangian_mul (rate is approximate LZ bits and distortion is squared error).
 		// Larger values push the postprocessor towards optimizing more for lower distortion, and smaller values more for rate.
 		float m_langrangian_multiplier;
-		
+
 		// m_max_allowed_rms_increase_ratio: How much the RMS error of a block is allowed to increase before a trial is rejected. 1.0=no increase allowed, 1.05=5% increase allowed, etc.
 		float m_max_allowed_rms_increase_ratio;
-		
-		// m_skip_block_rms_thresh: Blocks with this much RMS error or more are completely skipped by the RDO encoder. 
+
+		// m_skip_block_rms_thresh: Blocks with this much RMS error or more are completely skipped by the RDO encoder.
 		float m_skip_block_rms_thresh;
 
-		// m_endpoint_refinement: If true, the post-process will attempt to refine the endpoints of blocks with modified selectors. 
+		// m_endpoint_refinement: If true, the post-process will attempt to refine the endpoints of blocks with modified selectors.
 		bool m_endpoint_refinement;
 
 		uint32_t m_lz_literal_cost;

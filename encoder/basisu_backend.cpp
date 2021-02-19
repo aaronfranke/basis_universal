@@ -637,11 +637,11 @@ namespace basisu
 				gi.unpack(gi_unpacked);
 
 				char buf[256];
-#ifdef _WIN32				
+#ifdef _WIN32
 				sprintf_s(buf, sizeof(buf), "basisu_backend_slice_%u.png", slice_index);
 #else
 				snprintf(buf, sizeof(buf), "basisu_backend_slice_%u.png", slice_index);
-#endif				
+#endif
 				save_png(buf, gi_unpacked);
 			}
 
@@ -1633,7 +1633,7 @@ namespace basisu
 				m_output.m_selector_palette = coder.get_bytes();
 			}
 
-		}  // if (m_params.m_use_global_sel_codebook)        
+		}  // if (m_params.m_use_global_sel_codebook)
 
 		debug_printf("Selector codebook bits: %u bytes: %u, Bits per entry: %3.1f, Avg bits/texel: %3.3f\n",
 			(int)m_output.m_selector_palette.size() * 8, (int)m_output.m_selector_palette.size(),

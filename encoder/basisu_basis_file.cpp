@@ -27,14 +27,14 @@ namespace basisu
 		m_header.m_data_size = m_total_file_size - sizeof(basist::basis_file_header);
 
 		m_header.m_total_slices = (uint32_t)encoder_output.m_slice_desc.size();
-		
+
 		m_header.m_total_images = 0;
 		for (uint32_t i = 0; i < encoder_output.m_slice_desc.size(); i++)
 			m_header.m_total_images = maximum<uint32_t>(m_header.m_total_images, encoder_output.m_slice_desc[i].m_source_file_index + 1);
-		
+
 		m_header.m_tex_format = (int)encoder_output.m_tex_format;
 		m_header.m_flags = 0;
-		
+
 		if (encoder_output.m_etc1s)
 		{
 			assert(encoder_output.m_tex_format == basist::basis_tex_format::cETC1S);
@@ -47,7 +47,7 @@ namespace basisu
 
 		if (y_flipped)
 			m_header.m_flags = m_header.m_flags | basist::cBASISHeaderFlagYFlipped;
-				
+
 		for (uint32_t i = 0; i < encoder_output.m_slice_desc.size(); i++)
 		{
 			if (encoder_output.m_slice_desc[i].m_alpha)
@@ -90,7 +90,7 @@ namespace basisu
 
 			m_images_descs[i].m_image_index = slice_descs[i].m_source_file_index;
 			m_images_descs[i].m_level_index = slice_descs[i].m_mip_index;
-			
+
 			if (slice_descs[i].m_alpha)
 				m_images_descs[i].m_flags = m_images_descs[i].m_flags | basist::cSliceDescFlagsHasAlpha;
 			if (slice_descs[i].m_iframe)
@@ -165,7 +165,7 @@ namespace basisu
 
 		pHeader->m_data_size = m_total_file_size - sizeof(basist::basis_file_header);
 		pHeader->m_data_crc16 = basist::crc16(&m_comp_data[0] + sizeof(basist::basis_file_header), m_total_file_size - sizeof(basist::basis_file_header), 0);
-				
+
 		pHeader->m_header_crc16 = basist::crc16(&pHeader->m_data_size, sizeof(basist::basis_file_header) - BASISU_OFFSETOF(basist::basis_file_header, m_data_size), 0);
 
 		pHeader->m_sig = basist::basis_file_header::cBASISSigValue;
@@ -179,7 +179,7 @@ namespace basisu
 		const basisu_backend_slice_desc_vec &slice_descs = encoder_output.m_slice_desc;
 
 		// The Basis file uses 32-bit fields for lots of stuff, so make sure it's not too large.
-		uint64_t check_size = (uint64_t)sizeof(basist::basis_file_header) + (uint64_t)sizeof(basist::basis_slice_desc) * slice_descs.size() + 
+		uint64_t check_size = (uint64_t)sizeof(basist::basis_file_header) + (uint64_t)sizeof(basist::basis_slice_desc) * slice_descs.size() +
 			(uint64_t)encoder_output.m_endpoint_palette.size() + (uint64_t)encoder_output.m_selector_palette.size() + (uint64_t)encoder_output.m_slice_image_tables.size();
 		if (check_size >= 0xFFFF0000ULL)
 		{
@@ -203,7 +203,7 @@ namespace basisu
 			m_tables_file_ofs = 0;
 			m_first_image_file_ofs = m_slice_descs_file_ofs + sizeof(basist::basis_slice_desc) * (uint32_t)slice_descs.size();
 		}
-				
+
 		uint64_t total_file_size = m_first_image_file_ofs;
 		for (uint32_t i = 0; i < encoder_output.m_slice_image_data.size(); i++)
 			total_file_size += encoder_output.m_slice_image_data[i].size();

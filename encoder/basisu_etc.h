@@ -77,7 +77,7 @@ namespace basisu
 		// 000 001 010 011 100 101 110 111
 		// 0   1   2   3   -4  -3  -2  -1
 	};
-	
+
 	extern const int g_etc1_inten_tables[cETC1IntenModifierValues][cETC1SelectorValues];
 	extern const uint8_t g_etc1_to_selector_index[cETC1SelectorValues];
 	extern const uint8_t g_selector_index_to_etc1[cETC1SelectorValues];
@@ -93,7 +93,7 @@ namespace basisu
 	{
 		// big endian uint64:
 		// bit ofs:  56  48  40  32  24  16   8   0
-		// byte ofs: b0, b1, b2, b3, b4, b5, b6, b7 
+		// byte ofs: b0, b1, b2, b3, b4, b5, b6, b7
 		union
 		{
 			uint64_t m_uint64;
@@ -276,7 +276,7 @@ namespace basisu
 
 			const uint32_t byte_bit_ofs = bit_index & 7;
 			const uint32_t mask = 1 << byte_bit_ofs;
-						
+
 			const uint32_t lsb = etc1_val & 1;
 			const uint32_t msb = etc1_val >> 1;
 
@@ -618,7 +618,7 @@ namespace basisu
 		void set_block_color5_etc1s(const color_rgba &c_unscaled)
 		{
 			set_diff_bit(true);
-			
+
 			set_base5_color(pack_color5(c_unscaled, false));
 			set_delta3_color(pack_delta3(0, 0, 0));
 		}
@@ -651,11 +651,11 @@ namespace basisu
 			int dr = c1_unscaled.r - c0_unscaled.r;
 			int dg = c1_unscaled.g - c0_unscaled.g;
 			int db = c1_unscaled.b - c0_unscaled.b;
-			
+
 			dr = clamp<int>(dr, cETC1ColorDeltaMin, cETC1ColorDeltaMax);
 			dg = clamp<int>(dg, cETC1ColorDeltaMin, cETC1ColorDeltaMax);
 			db = clamp<int>(db, cETC1ColorDeltaMin, cETC1ColorDeltaMax);
-						
+
 			set_delta3_color(pack_delta3(dr, dg, db));
 
 			return true;
@@ -757,12 +757,12 @@ namespace basisu
 			return static_cast<uint8_t>(x);
 		}
 	};
-		
+
 	typedef std::vector<etc_block> etc_block_vec;
 
 	// Returns false if the unpack fails (could be bogus data or ETC2)
 	bool unpack_etc1(const etc_block& block, color_rgba *pDst, bool preserve_alpha = false);
-		
+
 	enum basis_etc_quality
 	{
 		cETCQualityFast,
@@ -1080,7 +1080,7 @@ namespace basisu
 	{
 		etc1_optimizer m_optimizer;
 	};
-	
+
 	void pack_etc1_solid_color_init();
 	uint64_t pack_etc1_block_solid_color(etc_block& block, const uint8_t* pColor);
 
@@ -1152,5 +1152,5 @@ namespace basisu
 
 	uint64_t pack_eac_a8(pack_eac_a8_results& results, const uint8_t* pPixels, uint32_t num_pixels, uint32_t base_search_rad, uint32_t mul_search_rad, uint32_t table_mask = UINT32_MAX);
 	void pack_eac_a8(eac_a8_block* pBlock, const uint8_t* pPixels, uint32_t base_search_rad, uint32_t mul_search_rad, uint32_t table_mask = UINT32_MAX);
-		
+
 } // namespace basisu

@@ -53,7 +53,7 @@ if (NOT MSVC)
    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${GCC_COMPILE_FLAGS} -D_DEBUG")
 endif()
 
-set(BASISU_SRC_LIST ${COMMON_SRC_LIST} 
+set(BASISU_SRC_LIST ${COMMON_SRC_LIST}
 	basisu_tool.cpp
 	encoder/basisu_backend.cpp
 	encoder/basisu_basis_file.cpp
@@ -92,7 +92,7 @@ endif()
 
 if (NOT EMSCRIPTEN)
 	install(TARGETS basisu DESTINATION bin)
-	
+
 	if (UNIX)
 		if (CMAKE_BUILD_TYPE STREQUAL Release)
 			if (APPLE)

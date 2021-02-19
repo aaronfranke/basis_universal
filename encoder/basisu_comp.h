@@ -25,10 +25,10 @@ namespace basisu
 	const uint32_t BASISU_MAX_SUPPORTED_TEXTURE_DIMENSION = 16384;
 
 	// Allow block's color distance to increase by 1.5 while searching for an alternative nearby endpoint.
-	const float BASISU_DEFAULT_ENDPOINT_RDO_THRESH = 1.5f; 
-	
+	const float BASISU_DEFAULT_ENDPOINT_RDO_THRESH = 1.5f;
+
 	// Allow block's color distance to increase by 1.25 while searching the selector history buffer for a close enough match.
-	const float BASISU_DEFAULT_SELECTOR_RDO_THRESH = 1.25f; 
+	const float BASISU_DEFAULT_SELECTOR_RDO_THRESH = 1.25f;
 
 	const int BASISU_DEFAULT_QUALITY = 128;
 	const float BASISU_DEFAULT_HYBRID_SEL_CB_QUALITY_THRESH = 2.0f;
@@ -57,7 +57,7 @@ namespace basisu
 			m_filename.clear();
 			m_width = 0;
 			m_height = 0;
-						
+
 			m_basis_rgb_avg_psnr = 0.0f;
 			m_basis_rgba_avg_psnr = 0.0f;
 			m_basis_a_avg_psnr = 0.0f;
@@ -71,7 +71,7 @@ namespace basisu
 			m_bc7_luma_709_psnr = 0.0f;
 			m_bc7_luma_601_psnr = 0.0f;
 			m_bc7_luma_709_ssim = 0.0f;
-						
+
 			m_best_etc1s_rgb_avg_psnr = 0.0f;
 			m_best_etc1s_luma_709_psnr = 0.0f;
 			m_best_etc1s_luma_601_psnr = 0.0f;
@@ -97,7 +97,7 @@ namespace basisu
 		float m_bc7_luma_709_psnr;
 		float m_bc7_luma_601_psnr;
 		float m_bc7_luma_709_ssim;
-		
+
 		// Highest achievable quality ETC1S statistics
 		float m_best_etc1s_rgb_avg_psnr;
 		float m_best_etc1s_luma_709_psnr;
@@ -185,7 +185,7 @@ namespace basisu
 		T m_max;
 		bool m_changed;
 	};
-		
+
 	struct basis_compressor_params
 	{
 		basis_compressor_params() :
@@ -253,7 +253,7 @@ namespace basisu
 
 			m_no_endpoint_rdo.clear();
 			m_endpoint_rdo_thresh.clear();
-						
+
 			m_mip_gen.clear();
 			m_mip_scale.clear();
 			m_mip_filter = "kaiser";
@@ -281,23 +281,23 @@ namespace basisu
 
 			m_pJob_pool = nullptr;
 		}
-				
+
 		// Pointer to the global selector codebook, or nullptr to not use a global selector codebook
 		const basist::etc1_global_selector_codebook *m_pSel_codebook;
 
 		// True to generate UASTC .basis file data, otherwise ETC1S.
 		bool_param<false> m_uastc;
 
-		// If m_read_source_images is true, m_source_filenames (and optionally m_source_alpha_filenames) contains the filenames of PNG images to read. 
+		// If m_read_source_images is true, m_source_filenames (and optionally m_source_alpha_filenames) contains the filenames of PNG images to read.
 		// Otherwise, the compressor processes the images in m_source_images.
 		std::vector<std::string> m_source_filenames;
 		std::vector<std::string> m_source_alpha_filenames;
-		
+
 		std::vector<image> m_source_images;
 		// TODO: Allow caller to supply their own mipmaps
-						
+
 		// Filename of the output basis file
-		std::string m_out_filename;	
+		std::string m_out_filename;
 
 		// The params are done this way so we can detect when the user has explictly changed them.
 
@@ -306,10 +306,10 @@ namespace basisu
 
 		// If true, the compressor will print basis status to stdout during compression.
 		bool_param<true> m_status_output;
-		
+
 		// Output debug information during compression
 		bool_param<false> m_debug;
-		
+
 		// m_debug_images is pretty slow
 		bool_param<false> m_debug_images;
 
@@ -321,7 +321,7 @@ namespace basisu
 
 		// Frontend/backend codec parameters
 		bool_param<false> m_no_hybrid_sel_cb;
-		
+
 		// Use perceptual sRGB colorspace metrics (for normal maps, etc.)
 		bool_param<true> m_perceptual;
 
@@ -337,17 +337,17 @@ namespace basisu
 
 		// Write the output basis file to disk using m_out_filename
 		bool_param<false> m_write_output_basis_files;
-				
-		// Compute and display image metrics 
+
+		// Compute and display image metrics
 		bool_param<false> m_compute_stats;
-		
+
 		// Check to see if any input image has an alpha channel, if so then the output basis file will have alpha channels
 		bool_param<true> m_check_for_alpha;
-		
+
 		// Always put alpha slices in the output basis file, even when the input doesn't have alpha
-		bool_param<false> m_force_alpha; 
+		bool_param<false> m_force_alpha;
 		bool_param<true> m_multithreading;
-		
+
 		// Split the R channel to RGB and the G channel to alpha, then write a basis file with alpha channels
 		char m_swizzle[4];
 
@@ -359,24 +359,24 @@ namespace basisu
 		param<float> m_hybrid_sel_cb_quality_thresh;
 		param<int> m_global_pal_bits;
 		param<int> m_global_mod_bits;
-		
+
 		// mipmap generation parameters
 		bool_param<false> m_mip_gen;
 		param<float> m_mip_scale;
 		std::string m_mip_filter;
 		bool_param<false> m_mip_srgb;
 		bool_param<true> m_mip_premultiplied; // not currently supported
-		bool_param<false> m_mip_renormalize; 
+		bool_param<false> m_mip_renormalize;
 		bool_param<true> m_mip_wrapping;
 		param<int> m_mip_smallest_dimension;
-				
-		// Codebook size (quality) control. 
+
+		// Codebook size (quality) control.
 		// If m_quality_level != -1, it controls the quality level. It ranges from [0,255] or [BASISU_QUALITY_MIN, BASISU_QUALITY_MAX].
 		// Otherwise m_max_endpoint_clusters/m_max_selector_clusters controls the codebook sizes directly.
 		uint32_t m_max_endpoint_clusters;
 		uint32_t m_max_selector_clusters;
 		int m_quality_level;
-		
+
 		// m_tex_type, m_userdata0, m_userdata1, m_framerate - These fields go directly into the Basis file header.
 		basist::basis_texture_type m_tex_type;
 		uint32_t m_userdata0;
@@ -393,7 +393,7 @@ namespace basisu
 
 		job_pool *m_pJob_pool;
 	};
-	
+
 	class basis_compressor
 	{
 		BASISU_NO_EQUALS_OR_COPY_CONSTRUCT(basis_compressor);
@@ -402,7 +402,7 @@ namespace basisu
 		basis_compressor();
 
 		bool init(const basis_compressor_params &params);
-		
+
 		enum error_code
 		{
 			cECSuccess = 0,
@@ -420,24 +420,24 @@ namespace basisu
 		error_code process();
 
 		const uint8_vec &get_output_basis_file() const { return m_output_basis_file; }
-		
+
 		const std::vector<image_stats> &get_stats() const { return m_stats; }
 
 		uint32_t get_basis_file_size() const { return m_basis_file_size; }
 		double get_basis_bits_per_texel() const { return m_basis_bits_per_texel; }
 
 		bool get_any_source_image_has_alpha() const { return m_any_source_image_has_alpha; }
-				
+
 	private:
 		basis_compressor_params m_params;
-		
+
 		std::vector<image> m_slice_images;
 
 		std::vector<image_stats> m_stats;
 
 		uint32_t m_basis_file_size;
 		double m_basis_bits_per_texel;
-		
+
 		basisu_backend_slice_desc_vec m_slice_descs;
 
 		uint32_t m_total_blocks;
@@ -461,7 +461,7 @@ namespace basisu
 		std::vector<image> m_decoded_output_textures_unpacked_bc7;
 
 		uint8_vec m_output_basis_file;
-		
+
 		std::vector<gpu_image> m_uastc_slice_textures;
 		basisu_backend_output m_uastc_backend_output;
 

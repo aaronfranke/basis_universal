@@ -1,7 +1,7 @@
 # basis_universal
 Basis Universal Supercompressed GPU Texture Codec
 
-Basis Universal is a ["supercompressed"](http://gamma.cs.unc.edu/GST/gst.pdf) GPU texture compression system that outputs a highly compressed intermediate file format (.basis) that can be quickly transcoded to a [very wide variety](https://github.com/BinomialLLC/basis_universal/wiki/OpenGL-texture-format-enums-table) of GPU compressed and uncompressed pixel formats: ASTC 4x4 L/LA/RGB/RGBA, PVRTC1 4bpp RGB/RGBA, PVRTC2 RGB/RGBA, BC7 mode 6 RGB, BC7 mode 5 RGB/RGBA, BC1-5 RGB/RGBA/X/XY, ETC1 RGB, ETC2 RGBA, ATC RGB/RGBA, ETC2 EAC R11 and RG11, FXT1 RGB, and uncompressed raster image formats 8888/565/4444. 
+Basis Universal is a ["supercompressed"](http://gamma.cs.unc.edu/GST/gst.pdf) GPU texture compression system that outputs a highly compressed intermediate file format (.basis) that can be quickly transcoded to a [very wide variety](https://github.com/BinomialLLC/basis_universal/wiki/OpenGL-texture-format-enums-table) of GPU compressed and uncompressed pixel formats: ASTC 4x4 L/LA/RGB/RGBA, PVRTC1 4bpp RGB/RGBA, PVRTC2 RGB/RGBA, BC7 mode 6 RGB, BC7 mode 5 RGB/RGBA, BC1-5 RGB/RGBA/X/XY, ETC1 RGB, ETC2 RGBA, ATC RGB/RGBA, ETC2 EAC R11 and RG11, FXT1 RGB, and uncompressed raster image formats 8888/565/4444.
 
 The system now supports two modes: a high quality mode which is internally based off the [UASTC compressed texture format](https://richg42.blogspot.com/2020/01/uastc-block-format-encoding.html), and the original lower quality mode which is based off a subset of ETC1 called "ETC1S". UASTC is for extremely high quality (similar to BC7 quality) textures, and ETC1S is for very small files. The ETC1S system includes built-in data compression, while the UASTC system includes an optional Rate Distortion Optimization (RDO) post-process stage that conditions the encoded UASTC texture data in the .basis file so it can be more effectively LZ compressed by the end user. More technical details about UASTC integration are [here](https://github.com/BinomialLLC/basis_universal/wiki/UASTC-implementation-details).
 
@@ -21,7 +21,7 @@ Basis Universal supports "skip blocks" in ETC1S compressed texture arrays, which
 
 Probably the most important concept to understand about Basis Universal before using it: The system supports **two** very different universal texture modes: The original "ETC1S" mode is low/medium quality, but the resulting file sizes are very small because the system has built-in compression for ETC1S texture format files. This is the command line encoding tool's default mode. ETC1S textures work best on images, photos, map data, or albedo/specular/etc. textures, but don't work as well on normal maps. There's the second "UASTC" mode, which is significantly higher quality (near-BC7 grade), and is usable on all texture types including complex normal maps. UASTC mode purposely does not have built-in file compression like ETC1S mode does, so the resulting files are quite large (8-bits/texel - same as BC7) compared to ETC1S mode. The UASTC encoder has an optional Rate Distortion Optimization (RDO) encoding mode (implemented as a post-process over the encoded UASTC texture data), which lowers the output data's entropy in a way that results in better compression when UASTC .basis files are compressed with Deflate/Zstd, etc. In UASTC mode, you must losslessly compress the file yourself.
 
-Basis Universal is not an image compression codec. It's a texture compression codec. It can be used just like an image compression codec, but that's not the only use case. Here's a [good intro](http://renderingpipeline.com/2012/07/texture-compression/) to GPU texture compression. If you're looking to primarily use the system as an image compression codec on sRGB photographic content, use the default ETC1S mode, because it has built-in compression. 
+Basis Universal is not an image compression codec. It's a texture compression codec. It can be used just like an image compression codec, but that's not the only use case. Here's a [good intro](http://renderingpipeline.com/2012/07/texture-compression/) to GPU texture compression. If you're looking to primarily use the system as an image compression codec on sRGB photographic content, use the default ETC1S mode, because it has built-in compression.
 
 **The "-q X" option controls the output quality in ETC1S mode.** The default is quality level 128. "-q 255" will increase quality quite a bit. If you want even higher quality, try "-max_selectors 16128 -max_endpoints 16128" instead of -q. -q internally tries to set the codebook sizes (or the # of quantization intervals for endpoints/selectors) for you. You need to experiment with the quality level on your content.
 
@@ -37,11 +37,11 @@ The encoder uses [tcuAstcUtil.cpp](https://chromium.googlesource.com/external/de
 
 ### Legal/IP/license stuff
 
-Basis Universal uses texture compression formats or technologies created by several companies: ARM Holdings, AMD, Ericsson, Microsoft, and Imagination Technologies Limited. All are supported by various open standards or API's from [The Khronos Group](https://www.khronos.org/), such as OpenGL 4.5, OpenGL ES, or Vulkan. 
+Basis Universal uses texture compression formats or technologies created by several companies: ARM Holdings, AMD, Ericsson, Microsoft, and Imagination Technologies Limited. All are supported by various open standards or API's from [The Khronos Group](https://www.khronos.org/), such as OpenGL 4.5, OpenGL ES, or Vulkan.
 
 A few texture formats (such as AMD/ATI's ATC texture format, or PVRTC2) were not documented sufficiently by the originator of the format. In these cases, we relied on open source code references from other authors, or information in published articles/papers to implement support for those texture formats in our transcoder. These references are included here.
 
-ASTC usage falls under ARM's [END USER LICENCE AGREEMENT FOR THE MALI ASTC SPECIFICATION AND SOFTWARE CODEC license agreement](https://github.com/ARM-software/astc-encoder/blob/master/LICENSE.md). 
+ASTC usage falls under ARM's [END USER LICENCE AGREEMENT FOR THE MALI ASTC SPECIFICATION AND SOFTWARE CODEC license agreement](https://github.com/ARM-software/astc-encoder/blob/master/LICENSE.md).
 
 PVRTC1/2: See the [PVRTC Specification and User Guide](https://www.imgtec.com/downloads/download-info/pvrtc-texture-compression-user-guide-2/). Imagination Technologies Limited, 23 Nov 2018. Also see the [Khronos Data Format Specification](https://www.khronos.org/registry/DataFormat/specs/1.3/dataformat.1.3.html). See [PVR Texture Compression Exploration](https://roartindon.blogspot.com/2014/08/pvr-texture-compression-exploration.html) and [PvrTcCompressor](https://bitbucket.org/jthlim/pvrtccompressor/src). Also see [Texture Compression Techniques](http://sv-journal.org/2014-1/06/en/index.php?lang=en#7-3).
 
@@ -71,7 +71,7 @@ before any build artifacts have been created.
 
 ### Command Line Compression Tool
 
-The command line tool used to create, validate, and transcode/unpack .basis files is named "basisu". Run basisu without any parameters for help. 
+The command line tool used to create, validate, and transcode/unpack .basis files is named "basisu". Run basisu without any parameters for help.
 
 To build basisu:
 
@@ -126,7 +126,7 @@ The mipmapped or cubemap .KTX files will be in a wide variety of compressed GPU 
 
 After compression, the compressor transcodes all slices in the output .basis file to validate that the file decompresses correctly. It also validates all header, compressed data, and slice data CRC16's.
 
-For best quality, you must supply basisu with original uncompressed source images. Any other type of lossy compression applied before basisu (including ETC1/BC1-5, BC7, JPEG, etc.) will cause multi-generational artifacts to appear in the final output textures. 
+For best quality, you must supply basisu with original uncompressed source images. Any other type of lossy compression applied before basisu (including ETC1/BC1-5, BC7, JPEG, etc.) will cause multi-generational artifacts to appear in the final output textures.
 
 For the maximum possible achievable ETC1S mode quality with the current format and encoder (completely ignoring encoding speed!), use:
 
@@ -142,7 +142,7 @@ To compress small video sequences, say using tools like ffmpeg and VirtualDub:
 
 The reference encoder will take a LONG time and a lot of CPU to encode video. The more cores your machine has, the better. Basis is intended for smaller videos of a few dozen seconds or so. If you are very patient and have a Threadripper or Xeon workstation, you should be able to encode up to a few thousand 720P frames. The "webgl_videotest" directory contains a very simple video viewer.
 
-The .basis file will contain multiple images (all using the same global codebooks), which you can retrieve using the transcoder's image API. The system now supports [conditional replenisment](https://en.wikipedia.org/wiki/MPEG-1) (CR, or "skip blocks"). CR can reduce the bitrate of some videos (highly dependent on how dynamic the content is) by over 50%. For videos using CR, the images must be requested from the transcoder in sequence from first to last, and random access is only allowed to I-Frames. 
+The .basis file will contain multiple images (all using the same global codebooks), which you can retrieve using the transcoder's image API. The system now supports [conditional replenisment](https://en.wikipedia.org/wiki/MPEG-1) (CR, or "skip blocks"). CR can reduce the bitrate of some videos (highly dependent on how dynamic the content is) by over 50%. For videos using CR, the images must be requested from the transcoder in sequence from first to last, and random access is only allowed to I-Frames.
 
 If you are doing rate distortion comparisons vs. other similar systems, be sure to experiment with increasing the endpoint RDO threshold (-endpoint_rdo_thresh X). This setting controls how aggressively the compressor's backend will combine together nearby blocks so they use the same block endpoint codebook vectors, for better coding efficiency. X defaults to a modest 1.5, which means the backend is allowed to increase the overall color distance by 1.5x while searching for merge candidates. The higher this setting, the better the compression, with the tradeoff of more block artifacts. Settings up to ~2.25 can work well, and make the codec more competitive. "-endpoint_rdo_thresh 1.75" is a good setting on many textures.
 
@@ -188,7 +188,7 @@ Compress a 20 sRGB source image video sequence (x01.png, x02.png, x03.png, etc.)
 `basisu -comp_level 2 -q 255 -file x.png -mipmap -y_flip`\
 Compress a mipmapped x.basis file from an sRGB image named x.png, Y flip each source image, set encoder to level 2 for slightly higher quality (but slower encoding).
 
-### WebGL test 
+### WebGL test
 
 The "WebGL" directory contains three simple WebGL demos that use the transcoder and compressor compiled to wasm with [emscripten](https://emscripten.org/). See more details [here](webgl/README.md).
 
@@ -200,7 +200,7 @@ The "WebGL" directory contains three simple WebGL demos that use the transcoder 
 
 Both the transcoder and now the compressor (as of 12/17/2020) may be compiled using emscripten to WebAssembly and used on the web. Currently, multithreading is not supported by the compressor when compiled with emscripten. A simple Web compression demo is in webgl/encode_test. All compressor features, including texture video, are supported and fully exposed.
 
-To enable compression support compile the JavaScript wrappers in webgl/transcoding/basis_wrappers.cpp with BASISU_SUPPORT_ENCODING set to 1. See the webgl/encoding directory. 
+To enable compression support compile the JavaScript wrappers in webgl/transcoding/basis_wrappers.cpp with BASISU_SUPPORT_ENCODING set to 1. See the webgl/encoding directory.
 
 ### Special thanks
 A huge thanks to Google for partnering with us and enabling this system to be open sourced.
@@ -215,7 +215,7 @@ Thanks to Mike Dussault (SpaceX) for supporting Binomial in the early days.
 
 Thanks to Graeme Devine at Magic Leap.
 
-Thanks to Matt Pritchard, formerly of Valve Software and Microsoft, for helping me with the computer hardware I used while building this system and its predecessor. 
+Thanks to Matt Pritchard, formerly of Valve Software and Microsoft, for helping me with the computer hardware I used while building this system and its predecessor.
 
 Thanks to John Brooks at Blue Shift, Inc. for inspiring this work by showing me his Dreamcast texture compression system around 2002, and for releasing etc2comp. I first saw the subblock flip estimation approach (used in basisu_etc.cpp) in etc2comp.
 
@@ -226,7 +226,7 @@ Thanks to Chas Boyd (Microsoft), for inspiring us to work on texture compression
 I first saw using precomputed tables for quickly computing optimal encodings of solid color blocks in ryg_dxt. The method that limits the canonical Huffman codelengths to a maximum codesize was used in Yoshizaki's lharc. The canonical Huffman codelength compression system is similar to Katz's Deflate method.
 
 ### Possible improvements
-The codebook generation process is basically a high quality, but slow and brute force reference. It's possible to massively speed up codebook gen in several ways. One way is to not throw away the tree structures constructed during the creation of the initial codebooks. 
+The codebook generation process is basically a high quality, but slow and brute force reference. It's possible to massively speed up codebook gen in several ways. One way is to not throw away the tree structures constructed during the creation of the initial codebooks.
 
 The way the -q (quality) option is converted to codebook sizes is very simple (fixed formulas), and could be improved. It has a tendency to plateau on some files.
 

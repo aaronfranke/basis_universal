@@ -57,7 +57,7 @@ namespace basisu
 		enum
 		{
 			cMaxEndpointClusters = 16128,
-						
+
 			cMaxSelectorClusters = 16128,
 		};
 
@@ -72,7 +72,7 @@ namespace basisu
 				m_perceptual(true),
 				m_debug_stats(false),
 				m_debug_images(false),
-																
+
 				m_dump_endpoint_clusterization(true),
 				m_validate(false),
 				m_multithreaded(false),
@@ -83,7 +83,7 @@ namespace basisu
 				m_use_hybrid_selector_codebooks(false),
 				m_hybrid_codebook_quality_thresh(0.0f),
 				m_tex_type(basist::cBASISTexType2D),
-				
+
 				m_pJob_pool(nullptr)
 			{
 			}
@@ -103,14 +103,14 @@ namespace basisu
 			bool m_validate;
 			bool m_multithreaded;
 			bool m_disable_hierarchical_endpoint_codebooks;
-			
+
 			const basist::etc1_global_selector_codebook *m_pGlobal_sel_codebook;
 			uint32_t m_num_global_sel_codebook_pal_bits;
 			uint32_t m_num_global_sel_codebook_mod_bits;
 			bool m_use_hybrid_selector_codebooks;
 			float m_hybrid_codebook_quality_thresh;
 			basist::basis_texture_type m_tex_type;
-			
+
 			job_pool *m_pJob_pool;
 		};
 
@@ -155,7 +155,7 @@ namespace basisu
 		const uint_vec &get_selector_cluster_block_indices(uint32_t selector_cluster_index) const { return m_selector_cluster_indices[selector_cluster_index]; }
 
 		void dump_debug_image(const char *pFilename, uint32_t first_block, uint32_t num_blocks_x, uint32_t num_blocks_y, bool output_blocks);
-		
+
 		void reoptimize_remapped_endpoints(const uint_vec &new_block_endpoints, int_vec &old_to_new_endpoint_cluster_indices, bool optimize_final_codebook, uint_vec *pBlock_selector_indices = nullptr);
 
 	private:
@@ -175,32 +175,32 @@ namespace basisu
 
 		// The quantized ETC1S texture.
 		etc_block_vec m_encoded_blocks;
-		
+
 		// Quantized blocks after endpoint quant, but before selector quant
-		etc_block_vec m_orig_encoded_blocks; 
-				
+		etc_block_vec m_orig_encoded_blocks;
+
 		// Full quality ETC1S texture
 		etc_block_vec m_etc1_blocks_etc1s;
-				
+
 		typedef vec<6, float> vec6F;
-		
+
 		// Endpoint clusterizer
 		typedef tree_vector_quant<vec6F> vec6F_quantizer;
 		vec6F_quantizer m_endpoint_clusterizer;
 
 		// For each endpoint cluster: An array of which subblock indices (block_index*2+subblock) are located in that cluster.
 		// Array of block indices for each endpoint cluster
-		std::vector<uint_vec> m_endpoint_clusters; 
+		std::vector<uint_vec> m_endpoint_clusters;
 
 		// Array of block indices for each parent endpoint cluster
-		std::vector<uint_vec> m_endpoint_parent_clusters;  
-		
+		std::vector<uint_vec> m_endpoint_parent_clusters;
+
 		// Each block's parent cluster index
-		uint8_vec m_block_parent_endpoint_cluster; 
+		uint8_vec m_block_parent_endpoint_cluster;
 
 		// Array of endpoint cluster indices for each parent endpoint cluster
-		std::vector<uint_vec> m_endpoint_clusters_within_each_parent_cluster; 
-				
+		std::vector<uint_vec> m_endpoint_clusters_within_each_parent_cluster;
+
 		struct endpoint_cluster_etc_params
 		{
 			endpoint_cluster_etc_params()
@@ -270,13 +270,13 @@ namespace basisu
 		};
 
 		typedef std::vector<endpoint_cluster_etc_params> cluster_subblock_etc_params_vec;
-		
-		// Each endpoint cluster's ETC1S parameters 
+
+		// Each endpoint cluster's ETC1S parameters
 		cluster_subblock_etc_params_vec m_endpoint_cluster_etc_params;
 
 		// The endpoint cluster index used by each ETC1 subblock.
 		std::vector<vec2U> m_block_endpoint_clusters_indices;
-				
+
 		// The block(s) within each selector cluster
 		// Note: If you add anything here that uses selector cluster indicies, be sure to update optimize_selector_codebook()!
 		std::vector<uint_vec> m_selector_cluster_indices;
@@ -286,12 +286,12 @@ namespace basisu
 
 		// The block(s) within each parent selector cluster.
 		std::vector<uint_vec> m_selector_parent_cluster_indices;
-		
+
 		// Each block's parent selector cluster
 		uint8_vec m_block_parent_selector_cluster;
 
 		// Array of selector cluster indices for each parent selector cluster
-		std::vector<uint_vec> m_selector_clusters_within_each_parent_cluster; 
+		std::vector<uint_vec> m_selector_clusters_within_each_parent_cluster;
 
 		basist::etc1_global_selector_codebook_entry_id_vec m_optimized_cluster_selector_global_cb_ids;
 		bool_vec m_selector_cluster_uses_global_cb;
